@@ -59,7 +59,7 @@ class Maze:
     def cell_neighbors(self, cell):
         """Logic for getting neighbors based on self.state."""
         neighbors = []
-        x, y = self.x_y_pos(cell)
+        x, y = self.x_y(cell)
 
         for direction in range(4):
             new_x = x + COMPASS[direction][0]
@@ -69,15 +69,18 @@ class Maze:
                 new_cell_index = self.cell_index(new_x, new_y)
                 walled = self.maze_array[new_cell_index] & WALL_BITS
 
-                if self.state == 'create' and not walled:
-                    neighbors.append((new_cell_index, direction))
-
+                if self.state == 'create':
+                    if not walled:
+                        neighbors.append((new_cell_index, direction))
         return neighbors
+
 
     # Connect two cells by knocking down the wall between them
     # Update wall bits of from_cell and to_cell
     def connect_cells(self, from_cell, to_cell, compass_index):
-        # TODO: Logic for updating cell bits
+        """Logic for updating cell bits."""
+        self.maze_array[from_cell] |= WALLS[compass_index]
+        self.maze_array[to_cell] |= OPPOSITE_WALLS[compass_index]
         self.draw_connect_cells(from_cell, compass_index)
 
     # Visit a cell along a possible solution path
