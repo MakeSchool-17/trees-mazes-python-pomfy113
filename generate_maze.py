@@ -26,6 +26,7 @@ def create_dfs(m):
             cell = history.pop()
 
         m.refresh_maze_view()
+    m.state = 'solve'
 
 def main():
     current_maze = maze.Maze('create')
